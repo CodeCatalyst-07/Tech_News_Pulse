@@ -28,17 +28,25 @@ Endpoint: `GET /v2/everything`
 ## How to run
 
 1. Clone this repo
-2. Open `app.js` and replace `YOUR_API_KEY_HERE` with your NewsAPI key
+2. Create a `config.js` file in the project root (this file is gitignored):
+   ```js
+   const API_KEY = 'your_actual_api_key_here';
+   ```
 3. Open `index.html` in a browser (or use Live Server in VS Code)
+
+> ⚠️ `config.js` is listed in `.gitignore` and will never be pushed to GitHub.  
+> Anyone cloning this repo must create their own `config.js` with their own API key.
 
 ---
 
 ## Files
 
 ```
-index.html   — page structure
-style.css    — styling and dark mode
-app.js       — all logic (fetch, search, filter, sort, save)
+index.html    — page structure
+style.css     — styling and dark mode
+app.js        — all logic (fetch, search, filter, sort, save)
+config.js     — your API key (gitignored, NOT pushed to GitHub)
+.gitignore    — tells Git to ignore config.js
 ```
 
 ---
@@ -51,3 +59,12 @@ app.js       — all logic (fetch, search, filter, sort, save)
 - `.map()` — render article cards and saved list
 
 ---
+
+## Milestones
+
+| Milestone | Deadline | Status |
+|---|---|---|
+| M1 — Setup & README | 23rd March | ✅ Done |
+| M2 — API Integration | 1st April | ✅ Done |
+| M3 — Core Features | 8th April | ✅ Done |
+| M4 — Deploy & Submit | 10th April | ⏳ Pending |
