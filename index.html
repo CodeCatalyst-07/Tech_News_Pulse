@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tech News Pulse</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <h1>📡 Tech News Pulse</h1>
+      <p>Your daily tech headlines</p>
+    </div>
+    <div class="header-right">
+      <button id="themeToggle">🌙 Night Mode</button>
+      <button id="savedToggle">🔖 Saved (<span id="savedCount">0</span>)</button>
+    </div>
+  </header>
+
+  <!-- SEARCH + FILTERS -->
+  <div class="controls">
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="🔍  Search articles..."
+    />
+
+    <div class="categories">
+      <button class="cat-btn active" data-cat="technology">All Tech</button>
+      <button class="cat-btn" data-cat="artificial intelligence">🤖 AI</button>
+      <button class="cat-btn" data-cat="crypto bitcoin">₿ Crypto</button>
+      <button class="cat-btn" data-cat="gadgets">📱 Gadgets</button>
+    </div>
+
+    <div class="sort-row">
+      <label for="sortSelect">Sort by:</label>
+      <select id="sortSelect">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="az">A → Z</option>
+      </select>
+    </div>
+
+  </div>
+
+  <!-- STATUS MESSAGES -->
+  <p id="loadingMsg" class="status-msg">⏳ Loading articles...</p>
+  <p id="errorMsg"   class="status-msg hidden">
+    ⚠️ Could not load articles.
+    <button id="retryBtn">Try again</button>
+  </p>
+  <p id="emptyMsg" class="status-msg hidden">No articles found for your search.</p>
+
+  <!-- ARTICLES -->
+  <main id="newsGrid" class="news-grid"></main>
+
+  <!-- SAVED PANEL (sidebar) -->
+  <div id="savedPanel" class="saved-panel hidden">
+    <div class="saved-header">
+      <h2>🔖 Saved Articles</h2>
+      <button id="closePanel">✕ Close</button>
+    </div>
+    <div id="savedList">
+      <p class="no-saved">No saved articles yet.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Powered by <a href="https://newsapi.org" target="_blank">NewsAPI</a></p>
+  </footer>
+
+  <!-- config.js must come BEFORE app.js so API_KEY is available -->
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
