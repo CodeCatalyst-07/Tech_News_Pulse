@@ -1,7 +1,6 @@
 //  Tech News Pulse — app.js
-//  API_KEY is loaded in config.js
-
-const BASE_URL = 'https://gnews.io/api/v4/search';
+//  News is fetched via /api/news (Vercel serverless function)
+//  The actual GNews API key lives in Vercel Environment Variables — never in this file
 
 // ── State ──
 let allArticles   = [];
@@ -27,16 +26,16 @@ const themeToggle = document.getElementById('themeToggle');
 
 //  FETCH CODE
 
+//  Calls our Vercel serverless function — API key never reaches the browser
 async function fetchNews(query) {
   showLoading();
   try {
-    const url = `${BASE_URL}?q=${encodeURIComponent(query)}&lang=en&max=40&apikey=${API_KEY}`;
+    const url = `/api/news?query=${encodeURIComponent(query)}`;
     const res  = await fetch(url);
     const data = await res.json();
 
-    if (data.errors) throw new Error(data.errors[0]);
+    if (data.error) throw new Error(data.error);
 
-    // GNews returns "articles" array same as NewsAPI
     allArticles = data.articles.filter(a => a.title);
 
     renderArticles();
