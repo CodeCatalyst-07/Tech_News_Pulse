@@ -1,7 +1,7 @@
 //  Tech News Pulse — app.js
 //  API_KEY is loaded in config.js
 
-const BASE_URL = 'https://newsapi.org/v2/everything';
+const BASE_URL = 'https://gnews.io/api/v4/search';
 
 // ── State ──
 let allArticles   = [];
@@ -30,14 +30,14 @@ const themeToggle = document.getElementById('themeToggle');
 async function fetchNews(query) {
   showLoading();
   try {
-    const url = `${BASE_URL}?q=${encodeURIComponent(query)}&language=en&pageSize=40&sortBy=publishedAt&apiKey=${API_KEY}`;
+    const url = `${BASE_URL}?q=${encodeURIComponent(query)}&lang=en&max=40&apikey=${API_KEY}`;
     const res  = await fetch(url);
     const data = await res.json();
 
-    if (data.status === 'error') throw new Error(data.message);
+    if (data.errors) throw new Error(data.errors[0]);
 
-    // Remove deleted/empty articles
-    allArticles = data.articles.filter(a => a.title && a.title !== '[Removed]');
+    // GNews returns "articles" array same as NewsAPI
+    allArticles = data.articles.filter(a => a.title);
 
     renderArticles();
   } catch (err) {
@@ -87,7 +87,7 @@ function renderArticles() {
 
 function buildCard(article) {
   const fallback = 'https://placehold.co/600x180/e0e0e0/666666?text=No+Image';
-  const img      = article.urlToImage || fallback;
+  const img      = article.image || fallback;
   const desc     = article.description || 'No description available.';
   const source   = article.source?.name || 'Unknown';
   const date     = article.publishedAt ? new Date(article.publishedAt).toDateString() : '';
@@ -143,7 +143,7 @@ function renderSavedList() {
   // Using .map()
   savedList.innerHTML = savedArticles.map(a => {
     const fallback = 'https://placehold.co/60x60/e0e0e0/666666?text=📰';
-    const img = a.urlToImage || fallback;
+    const img = a.image || fallback;
     return `
       <div class="saved-item">
         <img src="${img}" alt="" onerror="this.src='${fallback}'" />
