@@ -1,62 +1,106 @@
 # Tech News Pulse
 
-A simple tech news aggregator built with HTML, CSS, and JavaScript.
+A simple tech news aggregator built with HTML, CSS, and JavaScript. Fetches real-time technology headlines and lets you search, filter, sort, and save articles for later.
 
 ---
 
 ## What it does
 
-- Fetches real-time tech news using the NewsAPI
+- Fetches real-time tech news using the GNews API
 - Filter by category: All Tech, AI, Crypto, Gadgets
 - Search articles by keyword
 - Sort by Newest, Oldest, or A→Z
-- Save articles to read later
+- Save articles to a "Read Later" list
 - Night mode toggle (preference saved in localStorage)
-- Fully responsive on mobile
+- Fully responsive on mobile, tablet, and desktop
 
 ---
 
 ## API Used
 
-**NewsAPI** — https://newsapi.org  
-Endpoint: `GET /v2/everything`
+**GNews API** — https://gnews.io  
+Endpoint: `GET /api/v4/search`
 
-> Free plan only works on localhost. For deployment use GNews or TheNewsAPI instead.
+The API key is **never exposed to the browser**. All requests go through a Vercel serverless function (`/api/news.js`) which calls GNews on the server side and returns the results.
 
 ---
 
-## How to run
+## Project Structure
 
-1. Clone this repo
-2. Create a `config.js` file in the project root (this file is gitignored):
-   ```js
-   const API_KEY = 'your_actual_api_key_here';
+```
+Tech_News_Pulse/
+├── api/
+│   └── news.js       — Vercel serverless function (proxies GNews API)
+├── index.html        — page structure
+├── style.css         — styling and dark/light mode
+├── app.js            — all logic (fetch, search, filter, sort, save)
+├── vercel.json       — Vercel routing config
+├── .gitignore        — ignores config.js
+└── README.md
+```
+
+---
+
+## How it works (API proxy)
+
+```
+Browser → /api/news?query=technology → Vercel Function → GNews API
+                                                              ↓
+Browser ← articles JSON              ← Vercel Function ←────┘
+```
+
+The GNews API key is stored as a **Vercel Environment Variable** (`GNEWS_API_KEY`). It never appears in any file pushed to GitHub.
+
+---
+
+## How to run locally
+
+1. Clone this repo:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/Tech_News_Pulse.git
+   cd Tech_News_Pulse
    ```
-3. Open `index.html` in a browser (or use Live Server in VS Code)
 
-> ⚠️ `config.js` is listed in `.gitignore` and will never be pushed to GitHub.  
-> Anyone cloning this repo must create their own `config.js` with their own API key.
+2. Install Vercel CLI (needed to run serverless functions locally):
+   ```bash
+   npm install -g vercel
+   ```
+
+3. Create a `.env` file in the project root:
+   ```
+   GNEWS_API_KEY=your_gnews_api_key_here
+   ```
+
+4. Run locally with Vercel dev server:
+   ```bash
+   vercel dev
+   ```
+
+5. Open `http://localhost:3000` in your browser.
+
+> Get a free GNews API key at https://gnews.io
 
 ---
 
-## Files
+## How to deploy on Vercel
 
-```
-index.html    — page structure
-style.css     — styling and dark mode
-app.js        — all logic (fetch, search, filter, sort, save)
-config.js     — your API key (gitignored, NOT pushed to GitHub)
-.gitignore    — tells Git to ignore config.js
-```
+1. Push the project to GitHub
+2. Go to vercel.com → Import your GitHub repo
+3. In **Settings → Environment Variables**, add:
+   - **Name:** `GNEWS_API_KEY`
+   - **Value:** your GNews API key
+4. Deploy — Vercel auto-deploys on every push to `main`
 
 ---
 
 ## Array HOFs used
 
-- `.filter()` — search and remove saved articles
-- `.sort()` — sort by date or title
-- `.find()` — look up an article by URL
-- `.map()` — render article cards and saved list
+All searching, filtering, and sorting uses Array Higher-Order Functions — no `for` or `while` loops anywhere:
+
+- `.filter()` — search articles by keyword, remove saved articles
+- `.sort()` — sort by date (newest/oldest) or title (A→Z)
+- `.find()` — look up a specific article by URL
+- `.map()` — render article cards and saved list as HTML
 
 ---
 
@@ -67,4 +111,10 @@ config.js     — your API key (gitignored, NOT pushed to GitHub)
 | M1 — Setup & README | 23rd March | ✅ Done |
 | M2 — API Integration | 1st April | ✅ Done |
 | M3 — Core Features | 8th April | ✅ Done |
-| M4 — Deploy & Submit | 10th April | ⏳ Pending |
+| M4 — Deploy & Final Submission | 10th April | ✅ Done |
+
+---
+
+## Live Demo
+
+🔗 https://tech-news-pulse-drab.vercel.app/
